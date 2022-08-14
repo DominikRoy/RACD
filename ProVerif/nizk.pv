@@ -3,8 +3,8 @@
 free c:channel.
 
 type nonce.
-free e_i: bitstring [private].
-weaksecret e_i.
+free x_i: bitstring [private].
+weaksecret x_i.
 
 
 (* Elliptic Curve *)
@@ -23,7 +23,7 @@ free v_i: bitstring [private].
 
 (* A formal query, specifying the attacker can't ever be leaked the
 actual cell location and randomness during the protocol. *)
-query attacker(e_i).
+query attacker(x_i).
 query attacker(r_i).
 query attacker(v_i).
 
@@ -50,7 +50,7 @@ let prover(g:G,odr:L) =
     (*new rA:bitstring;*)   
     (*let lA = map(lA) in*)
 
-    let event_hash = exp(g,mod(mul(r_i,mod(templatehash(e_i),odr)),odr)) in
+    let event_hash = exp(g,mod(mul(r_i,mod(templatehash(x_i),odr)),odr)) in
     let g_i = exp(g, mod(templatehash(e_i),odr)) in
     let t_i = exp(g_i,v_i) in
     let c_i = hash(append(g_i,t_i,event_hash)) in
@@ -61,7 +61,7 @@ let prover(g:G,odr:L) =
 
 let verifier(g:G,odr:L) =
     in(c, (event_hash:G,c_i:bitstring,s_i:bitstring));
-    let g_i = exp(g, mod(templatehash(e_i),odr)) in
+    let g_i = exp(g, mod(templatehash(x_i),odr)) in
     let g_i_s = exp(g_i,s_i) in
     let event_hash_c = exp(event_hash,mod(c_i,odr)) in
     let t_i_prime = point_mul(g_i_s,event_hash_c) in
