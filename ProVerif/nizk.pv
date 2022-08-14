@@ -51,7 +51,7 @@ let prover(g:G,odr:L) =
     (*let lA = map(lA) in*)
 
     let event_hash = exp(g,mod(mul(r_i,mod(templatehash(x_i),odr)),odr)) in
-    let g_i = exp(g, mod(templatehash(e_i),odr)) in
+    let g_i = exp(g, mod(templatehash(x_i),odr)) in
     let t_i = exp(g_i,v_i) in
     let c_i = hash(append(g_i,t_i,event_hash)) in
     let s_i = mod(sub(v_i,mod(mul(r_i,mod(c_i,odr)),odr)),odr) in
