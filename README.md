@@ -53,6 +53,8 @@ sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/prove
 
 # Remote Attestation with Constrained Disclosure Protocol
 
+## Setup Docker with TPM Simulator
+
 
 ## Setup Raspberry Pi 3 with LetsTrust TPM 2.0
 
@@ -347,10 +349,17 @@ cd racd-protocol
 Compile:
 
 ```bash
-step3 make -f Makefileclient clean
-step4 make -f Makefileserver clean
-step5 make -f Makefileclient
-step6 make -f Makefileserver
+##step3
+make -f Makefileclient clean
+
+##step4
+make -f Makefileserver clean
+
+##step5
+make -f Makefileclient
+
+##step6
+make -f Makefileserver
 ```
 Generate self-signed certificates:
 
