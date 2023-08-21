@@ -1,1 +1,0 @@
-void generateNonce(unsigned char * buf);
