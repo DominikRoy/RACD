@@ -264,7 +264,6 @@ sudo make -f Makefile.psa install install_so \
    ```
 
 5. Unzip *CHARRA* and *CHARRA RACD*:
-
    ```bash
    7z x charra_adapted-time.7z
    7z x racd-protocol.7z
