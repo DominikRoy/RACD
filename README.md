@@ -53,7 +53,6 @@ sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/prove
 
 # Remote Attestation with Constrained Disclosure Protocol
 
-### Instructions for Docker
 
 ## Setup Raspberry Pi 3 with LetsTrust TPM 2.0
 
@@ -240,15 +239,15 @@ sudo make -f Makefile.psa install install_so \
 	&& sudo ldconfig
 ```
 
-### Prepare CHARRA
+### Prepare [CHARRA](https://github.com/Fraunhofer-SIT/charra)
 
-1. Create folder `/home/pi/charra-ppra`:
+1. Create folder `/home/pi/charra-racd`:
 
    ```bash
-   mkdir -vp /home/pi/charra-ppra
+   mkdir -vp /home/pi/charra-racd
    ```
 
-2. Copy over this folder to Raspberry Pi in `/home/pi/charra-ppra`
+2. Copy over this folder to Raspberry Pi in `/home/pi/charra-racd`
 
 3. Install 7z:
 
@@ -256,17 +255,17 @@ sudo make -f Makefile.psa install install_so \
    sudo apt install -y p7zip-full
    ```
 
-4. Change to `/home/pi/charra-ppra`:
+4. Change to `/home/pi/charra-racd`:
 
    ```bash
-   cd /home/pi/charra-ppra
+   cd /home/pi/charra-racd
    ```
 
-5. Unzip *CHARRA* and *CHARRA PPRA*:
+5. Unzip *CHARRA* and *CHARRA RACD*:
 
    ```bash
    7z x charra_adapted-time.7z
-   7z x ppra-protocol.7z
+   7z x racd-protocol.7z
    ```
 
 ### TPM Permissions
@@ -279,10 +278,10 @@ sudo chmod 777 /dev/tpm*
 
 ## Test CHARRA
 
-Change to `/home/pi/charra-ppra/charra_adapted-time`:
+Change to `/home/pi/charra-racd/charra_adapted-time`:
 
    ```bash
-   cd /home/pi/charra-ppra/charra_adapted-time
+   cd /home/pi/charra-racd/charra_adapted-time
    ```
 
 Compile:
@@ -304,12 +303,12 @@ bin/attester &
 for i in {1..100}; do bin/verifier; done
 ```
 
-### CHARRA PPRA
+### CHARRA RACD
 
-Change to `/home/pi/charra-ppra/ppra-protocol`:
+Change to `/home/pi/charra-racd/racd-protocol`:
 
    ```bash
-   cd /home/pi/charra-ppra/ppra-protocol
+   cd /home/pi/charra-racd/racd-protocol
    ```
 
 #### Prerequitsies
@@ -339,10 +338,10 @@ sudo make install \
 	&& sudo ldconfig
 ```
 
-#### Test CHARRA PPRA
+#### Test CHARRA RACD
 
 ```bash
-cd ppra-protocol
+cd racd-protocol
 ```
 
 Compile:
@@ -353,7 +352,24 @@ step4 make -f Makefileserver clean
 step5 make -f Makefileclient
 step6 make -f Makefileserver
 ```
+Generate self-signed certificates:
 
+```bash
+##Generate CA
+./cert_write selfsign=1 issuer_key=ca_key.key issuer_name=CN=localhost,O=localhost,C=DE is_ca=1 max_pathlen=0 output_file=my_ca_localhost.crt 
+
+##Generate Server csr
+./cert_req filename=prover_key.key subject_name=CN=localhost,O=Prover,C=DE output_file=prover_localhost.csr
+
+##Generate Client csr
+./cert_req filename=verifier_key.key subject_name=CN=localhost,O=Verifier,C=DE output_file=verifier_localhost.csr
+
+##Generate Server cert from csr with openssl
+openssl x509 -req -in prover_localhost.csr -CA my_ca_localhost.crt -CAkey ca_key.key -CAcreateserial -out prover_localhost.crt -days 5000 -sha256
+
+##Generate Client cert from csr with openssl with selfsigned CA
+openssl x509 -req -in verifier_localhost.csr -CA my_ca_localhost.crt -CAkey ca_key.key -CAcreateserial -out verifier_localhost.crt -days 5000 -sha256
+```
 Run and collect time information:
 
 ```bash
