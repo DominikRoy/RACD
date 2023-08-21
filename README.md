@@ -4,7 +4,7 @@ This is the source code used to verify some of the security properties of the Re
 
 The folder contains the ProVerif code and the executable for ProVerif.
 
-- ppra.pv 
+- racd.pv 
 The code is meant to verify the secrecy of the capsule identifier dA1 and dB1k from the adversary. 
 Moreover, we verify if the attacker is able to brute-force/guess the identifiers dA1 and dB1k.
 We verify with ProVerif the strong secrecy, which shows that the adversary cannot distinguish between different secrets.
@@ -15,7 +15,7 @@ We verify with ProVerif the strong secrecy, which shows that the adversary canno
 - go to ./ProVerif/
 - run our protocol by executing the command for Windows:
 ```properties
- ./proverif.exe ppra.pv 
+ ./proverif.exe racd.pv 
 ```  
 
 ### Instructions for Linux (Ubuntu 20.04):
@@ -37,7 +37,7 @@ sudo apt-get install -y ocaml ocaml-compiler-libs ocaml-findlib liblablgtk2-ocam
 - clone the git repository into the current folder where the command above was executed
 - run our protocol by executing the command for Linux:
 ```properties
- ./proverif /PPRA-ProVerif/ProVerif/ppra.pv
+ ./proverif /PPRA-ProVerif/ProVerif/racd.pv
 ```
 ### Instructions for Docker:
 - make sure [docker](https://docs.docker.com/engine/install/) is installed
@@ -48,7 +48,7 @@ sudo docker build -t proverif .
 ```
 - after building the docker image execute following command to execute pptm proverif code:
 ```
-sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/proverif2.04/PPRA-ProVerif/ProVerif/ppra.pv
+sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/proverif2.04/PPRA-ProVerif/ProVerif/racd.pv
 
 
 # Remote Attestation with Constrained Disclosure Protocol
