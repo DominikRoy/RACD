@@ -5,9 +5,9 @@ This is the source code used to verify some of the security properties of the Re
 The folder contains the ProVerif code and the executable for ProVerif.
 
 - racd.pv 
-The code is meant to verify the secrecy of the capsule identifier dA1 and dB1k from the adversary. 
-Moreover, we verify if the attacker is able to brute-force/guess the identifiers dA1 and dB1k.
-We verify with ProVerif the strong secrecy, which shows that the adversary cannot distinguish between different secrets.
+The code is meant to verify the secrecy of the randomness used to blind the template hashes (x_i) from the adversary. 
+Moreover, we verify if the attacker is able to brute-force/guess x_i. 
+We verify with ProVerif if the adversary is able to retrieve the values ri and vi through the entire process of the involved entities.
 
 ### Instructions for Windows:
 - download the ProVerif binary for [Windows](https://bblanche.gitlabpages.inria.fr/proverif/proverifbin2.04.tar.gz)
