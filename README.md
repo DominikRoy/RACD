@@ -69,7 +69,7 @@ In addition, we describe the commands to deploy our PoC on a real Raspberry Pi a
     ```bash
     sudo docker run -p 44333 -it racd sudo su  
     ```
-4. In the bash of the docker image execute following commds:
+4. In the bash of the docker image execute following commands:
     ```bash
     ##Step 1:
     rm -v  pcr0.log ppra_attester_50_local_new.csv ppra_verifier_50_new.csv
@@ -88,7 +88,7 @@ In addition, we describe the commands to deploy our PoC on a real Raspberry Pi a
     ```bash
     ../output/verifier server_name=localhost server_port=4433 ca_file=my_ca_localhost.crt crt_file=verifier_localhost.crt key_file=verifier_key.key swSelection_file=programs50.cbor
     ```
-7. If everything went well in the end the program outputs:
+7. If everything went well, the program outputs:
     ```bash
      ATTESTATION SUCCESSFUL 
     ```
