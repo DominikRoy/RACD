@@ -1,4 +1,8 @@
-# Remote Attestation with Constrained Disclosure ProVerif
+# Remote Attestation with Constrained Disclosure
+We provide the instructions to verify our ProVerif code w.r.t our paper.
+Follwing, we provide the proof of concept of our scheme, where we provide instructions to compile and run the code.
+
+## ProVerif
 
 This is the source code used to verify some of the security properties of the Remote Attestation with Constrained Disclosure protocol.
 
@@ -51,12 +55,12 @@ sudo docker build -t proverif .
 sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/proverif2.04/PPRA-ProVerif/ProVerif/racd.pv
 ```
 
-# Remote Attestation with Constrained Disclosure Protocol
+## Protocol
 
-## Setup Docker with TPM Simulator
+### Setup Docker with TPM Simulator
 
 
-## Setup Raspberry Pi 3 with LetsTrust TPM 2.0
+### Setup Raspberry Pi 3 with LetsTrust TPM 2.0
 
 1. Download Raspberry Pi OS:
 
@@ -119,13 +123,13 @@ sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/prove
    * Restart SSH with `sudo systemctl restart ssh.service`
 
 
-### Update Packages
+#### Update Packages
 
 ```bash
 sudo apt update && sudo apt dist-upgrade
 ```
 
-### Install TPM2 TSS Dependencies
+#### Install TPM2 TSS Dependencies
 
 ```bash
 sudo apt -y install \
@@ -151,7 +155,7 @@ sudo apt -y install \
 	uthash-dev
 ```
 
-### TPM2 TSS: Downlaod, Compile, and Install
+#### TPM2 TSS: Downlaod, Compile, and Install
 
 ```bash
 ## clone Git repo
@@ -173,7 +177,7 @@ sudo make install \
 	&& sudo ldconfig
 ```
 
-### libCoAP: Downlaod, Compile, and Install
+#### libCoAP: Downlaod, Compile, and Install
 
 ```bash
 ## clone Git repo
@@ -193,7 +197,7 @@ sudo make install \
 	&& sudo ldconfig
 ```
 
-### mbed TLS: Downlaod, Compile, and Install
+#### mbed TLS: Downlaod, Compile, and Install
 
 ```bash
 ## clone Git repo
@@ -209,7 +213,7 @@ sudo make install \
 	&& sudo ldconfig
 ```
 
-### QCBOR: Downlaod, Compile, and Install
+#### QCBOR: Downlaod, Compile, and Install
 
 ```bash
 ## clone Git repo
@@ -225,7 +229,7 @@ sudo make install install_so \
 	&& sudo ldconfig
 ```
 
-### t_cose: Downlaod, Compile, and Install
+#### t_cose: Downlaod, Compile, and Install
 
 ```bash
 ## clone Git repo
@@ -241,7 +245,7 @@ sudo make -f Makefile.psa install install_so \
 	&& sudo ldconfig
 ```
 
-### Prepare [CHARRA](https://github.com/Fraunhofer-SIT/charra)
+#### Prepare [CHARRA](https://github.com/Fraunhofer-SIT/charra)
 
 1. Create folder `/home/pi/charra-racd`:
 
@@ -269,7 +273,7 @@ sudo make -f Makefile.psa install install_so \
    7z x racd-protocol.7z
    ```
 
-### TPM Permissions
+#### TPM Permissions
 
 Set permissions on TPM device:
 
@@ -304,7 +308,7 @@ bin/attester &
 for i in {1..100}; do bin/verifier; done
 ```
 
-### CHARRA RACD
+#### CHARRA RACD
 
 Change to `/home/pi/charra-racd/racd-protocol`:
 
@@ -312,13 +316,13 @@ Change to `/home/pi/charra-racd/racd-protocol`:
    cd /home/pi/charra-racd/racd-protocol
    ```
 
-#### Prerequitsies
+##### Prerequitsies
 
 ```bash
 sudo apt install -y clang
 ```
 
-#### Libsodium
+##### Libsodium
 
 From: <https://forums.raspberrypi.com/viewtopic.php?t=203662>
 
@@ -339,7 +343,7 @@ sudo make install \
 	&& sudo ldconfig
 ```
 
-#### Test CHARRA RACD
+##### Test CHARRA RACD
 
 ```bash
 cd racd-protocol
