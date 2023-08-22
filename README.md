@@ -1,6 +1,6 @@
 # Remote Attestation with Constrained Disclosure
-We provide the instructions to verify our ProVerif code w.r.t our paper.
-Follwing, we provide the proof of concept of our scheme, where we provide instructions to compile and run the code.
+We provide the instructions to verify our [ProVerif](#ProVerif) code w.r.t our paper.
+Follwing, we provide the proof of concept of our [scheme](#Protocol), where we provide instructions to compile and run the code.
 
 ## ProVerif
 
