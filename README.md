@@ -56,10 +56,42 @@ sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/prove
 ```
 
 ## Protocol
-
+We provide instructions to emulate our PoC in Docker and with simulated TPM.
+In addition, we describe the commands to deploy our PoC on a real Raspberry Pi and with a real TPM used in our experiment evaluation.
 ### Setup Docker with TPM Simulator
+1. Clone the git repository
 
-
+2. Create the Docker image:
+    ```bash
+    sudo docker build -t racd --load .
+    ```
+3. Run the docker image:
+    ```bash
+    sudo docker run -p 44333 -it racd sudo su  
+    ```
+4. In the bash of the docker image execute following commds:
+    ```bash
+    ##Step 1:
+    rm -v  pcr0.log ppra_attester_50_local_new.csv ppra_verifier_50_new.csv
+    
+    ##Step 2:
+    export ASAN_OPTIONS=verify_asan_link_order=0
+    
+    ##Step 3:
+    ../output/attestor server_name=localhost server_port=4433 ca_file=my_ca_localhost.crt crt_file=prover_localhost.crt key_file=prover_key.key programs_file=programs250.cbor &
+    ```
+5. If the output in the terminal is:
+    ```bash
+    . Waiting for a remote connection ...
+    ```
+6. Press `enter` and execute following command:
+    ```bash
+    ../output/verifier server_name=localhost server_port=4433 ca_file=my_ca_localhost.crt crt_file=verifier_localhost.crt key_file=verifier_key.key swSelection_file=programs50.cbor
+    ```
+7. If everything went well in the end the program outputs:
+    ```bash
+     ATTESTATION SUCCESSFUL 
+    ```
 ### Setup Raspberry Pi 3 with LetsTrust TPM 2.0
 
 1. Download Raspberry Pi OS:
