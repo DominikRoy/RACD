@@ -1,6 +1,6 @@
 # Remote Attestation with Constrained Disclosure
-We provide the instructions to verify our ProVerif code w.r.t our paper.
-Follwing, we provide the proof of concept of our scheme, where we provide instructions to compile and run the code.
+We provide the instructions to verify our [ProVerif](#ProVerif) code w.r.t our paper.
+Follwing, we provide the proof of concept of our [scheme](#Protocol), where we provide instructions to compile and run the code.
 
 ## ProVerif
 
@@ -45,8 +45,9 @@ sudo apt-get install -y ocaml ocaml-compiler-libs ocaml-findlib liblablgtk2-ocam
 ```
 ### Instructions for Docker:
 - make sure [docker](https://docs.docker.com/engine/install/) is installed
-- clone the git repository of PPTM
-- the repository contains a `Dockerfile`, which builds the docker image. Therefore, execute following command to create the docker image:
+- clone the git repository of RACD
+- navigate into the ProVerif folder
+- the `ProVerif folder` contains a `Dockerfile`, which builds the docker image. Therefore, execute following command to create the docker image:
 ```
 sudo docker build -t proverif .                                                                              
 ```
@@ -69,7 +70,7 @@ In addition, we describe the commands to deploy our PoC on a real Raspberry Pi a
     ```bash
     sudo docker run -p 44333 -it racd sudo su  
     ```
-4. In the bash of the docker image execute following commds:
+4. In the bash of the docker image execute following commands:
     ```bash
     ##Step 1:
     rm -v  pcr0.log ppra_attester_50_local_new.csv ppra_verifier_50_new.csv
@@ -88,7 +89,7 @@ In addition, we describe the commands to deploy our PoC on a real Raspberry Pi a
     ```bash
     ../output/verifier server_name=localhost server_port=4433 ca_file=my_ca_localhost.crt crt_file=verifier_localhost.crt key_file=verifier_key.key swSelection_file=programs50.cbor
     ```
-7. If everything went well in the end the program outputs:
+7. If everything went well, the program outputs:
     ```bash
      ATTESTATION SUCCESSFUL 
     ```
