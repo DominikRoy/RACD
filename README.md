@@ -45,7 +45,7 @@ sudo apt-get install -y ocaml ocaml-compiler-libs ocaml-findlib liblablgtk2-ocam
 ```
 ### Instructions for Docker:
 - make sure [docker](https://docs.docker.com/engine/install/) is installed
-- clone the git repository of RACD
+- clone the git repository of [RACD](https://github.com/DominikRoy/RACD/tree/master)
 - navigate into the ProVerif folder
 - the `ProVerif folder` contains a `Dockerfile`, which builds the docker image. Therefore, execute following command to create the docker image:
 ```
