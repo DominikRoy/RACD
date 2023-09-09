@@ -53,7 +53,7 @@ sudo docker build -t proverif .
 ```
 - after building the docker image execute following command to execute pptm proverif code:
 ```
-sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/proverif2.04/PPRA-ProVerif/ProVerif/racd.pv
+sudo docker run -it proverif:latest ./proverif2.04/proverif /home/proverif/proverif2.04/RACD/ProVerif/racd.pv
 ```
 
 ## Protocol
