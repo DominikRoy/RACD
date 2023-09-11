@@ -64,13 +64,32 @@ In addition, we describe the commands to deploy our PoC on a real Raspberry Pi a
 
 2. Create the Docker image:
     ```bash
+    ##Docker version >= 23.0
     sudo docker build -t racd --load .
+    ```
+    ```bash
+    ##Docker version < 23.0
+    sudo docker build -t racd .
     ```
 3. Run the docker image:
     ```bash
     sudo docker run -p 44333 -it racd sudo su  
     ```
-4. In the bash of the docker image execute following commands:
+4. Test CHARRA in docker execute following command:
+   ```bash
+   (bin/attester &); sleep .2 ; bin/verifier ; sleep 1 ; pkill -SIGINT attester
+   ```
+5. If everything went well the program outputs:
+   ```bash
+	+----------------------------+
+	|   ATTESTATION SUCCESSFUL   |
+	+----------------------------+
+   ```
+6. To test RACD in docker navigate `/home/charra-racd/ppra-protocol/example/`:
+   ```bash
+   cd /home/charra-racd/ppra-protocol/example/
+   ```
+8.  In the folder `/home/charra-racd/ppra-protocol/example/` execute following commands:
     ```bash
     ##Step 1:
     rm -v  pcr0.log ppra_attester_50_local_new.csv ppra_verifier_50_new.csv
