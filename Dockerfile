@@ -164,8 +164,9 @@ ARG gid=1000
 
 RUN git clone 'https://github.com/DominikRoy/RACD.git' /home/charra-racd
 WORKDIR /home/charra-racd
-RUN 7z x charra_adapted-time.7z\ 
- 	&& 7z x racd-protocol.7z
+RUN 7z x racd-protocol.7z \
+	&& git clone 'https://github.com/Fraunhofer-SIT/charra.git'
+
 #WORKDIR /home/charra-racd/charra_adapted-time
 #RUN make
 
@@ -175,6 +176,8 @@ RUN make -f Makefileclient clean\
 	&& make -f Makefileclient \
 	&& make -f Makefileserver 
 
+WORKDIR /home/charra-racd/charra
+RUN make -j
 
 
 
@@ -284,8 +287,7 @@ RUN ln -s '/usr/local/bin/docker-entrypoint.sh' /
 ## set environment variables
 USER "$uid:$gid"
 ENV HOME /home/"$user"
-WORKDIR /home/charra-racd/ppra-protocol/example
-
+WORKDIR /home/charra-racd/charra/
 
 ## -----------------------------------------------------------------------------
 ## --- postamble ---------------------------------------------------------------
