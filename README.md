@@ -79,7 +79,7 @@ In addition, we describe the commands to deploy our PoC on a real Raspberry Pi a
    ```bash
    (bin/attester &); sleep .2 ; bin/verifier ; sleep 1 ; pkill -SIGINT attester
    ```
-5. If the outcome is:
+5. If everything went well the program outputs:
    ```bash
 	+----------------------------+
 	|   ATTESTATION SUCCESSFUL   |
