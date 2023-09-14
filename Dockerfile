@@ -1,18 +1,32 @@
-##############################################################################
-# "Dockerfile"                                                               #
-#                                                                            #
-# Author: Michael Eckel <michael.eckel@sit.fraunhofer.de> 					 #
-# Author: Dominik Roy George <d.r.george@tue.nl>							 #
-# Date: 2023-08-22                                                           #
-#                                                                            #
-# Hint: Check your Dockerfile at https://www.fromlatest.io/                  #
-##############################################################################
+################################################################################
+# Copyright 2023, Fraunhofer Institute for Secure Information Technology SIT.  #
+# All rights reserved.                                                         #
+# ---------------------------------------------------------------------------- #
+# Main Dockerfile for CHARRA.                                                  #
+# ---------------------------------------------------------------------------- #
+# Author:        Michael Eckel <michael.eckel@sit.fraunhofer.de>               #
+# Author:        Dominik Roy George <d.r.george@tue.nl>                        #
+# Date Modified: 2023-09-14T16:49:15+02:00                                     #
+# Date Created:  2023-08-23T13:37:42+02:00                                     #
+# ---------------------------------------------------------------------------- #
+# Hint: Check your Dockerfile at https://www.fromlatest.io/                    #
+################################################################################
+
+
+## -----------------------------------------------------------------------------
+## --- preamble ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
+
+## --- global arguments --------------------------------------------------------
+
+
+## --- set base image(s) -------------------------------------------------------
 
 FROM ghcr.io/tpm2-software/ubuntu-20.04:latest AS base
 
+## --- metadata ----------------------------------------------------------------
 
-## copy configs
-COPY "./docker/dist/etc/default/keyboard" "/etc/default/keyboard"
+LABEL org.opencontainers.image.authors="michael.eckel@sit.fraunhofer.de"
 
 ## --- image specific arguments ------------------------------------------------
 
@@ -37,7 +51,7 @@ RUN apt-get update \
     man-db \
     manpages-posix \
     manpages-dev \
-	p7zip-full \
+    p7zip-full \
     && rm -rf /var/lib/apt/lists/*
 
 ## Bash command completion
@@ -55,16 +69,16 @@ ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
 ## TPM2 TSS
 RUN git clone --depth=1 -b '3.2.1' \
-	'https://github.com/tpm2-software/tpm2-tss.git' /tmp/tpm2-tss
+    'https://github.com/tpm2-software/tpm2-tss.git' /tmp/tpm2-tss
 WORKDIR /tmp/tpm2-tss
 RUN git reset --hard \
-	&& git clean -xdf \
-	&& ./bootstrap \
-	&& ./configure --enable-integration --disable-doxygen-doc \
-	&& make clean \
-	&& make -j \
-	&& make install \
-	&& ldconfig
+    && git clean -xdf \
+    && ./bootstrap \
+    && ./configure --enable-integration --disable-doxygen-doc \
+    && make clean \
+    && make -j \
+    && make install \
+    && ldconfig
 
 ## make TPM simulator the default for TCTI
 RUN ln -sf 'libtss2-tcti-mssim.so' '/usr/local/lib/libtss2-tcti-default.so'
@@ -74,18 +88,18 @@ RUN rm -rf /tmp/tpm2-tss
 
 ## TPM2 tools
 RUN git clone --depth=1 -b '5.2' \
-	'https://github.com/tpm2-software/tpm2-tools.git' /tmp/tpm2-tools
+    'https://github.com/tpm2-software/tpm2-tools.git' /tmp/tpm2-tools
 WORKDIR /tmp/tpm2-tools
 RUN ./bootstrap \
-	&& ./configure \
-	&& make -j \
-	&& make install \
-	&& ldconfig
+    && ./configure \
+    && make -j \
+    && make install \
+    && ldconfig
 RUN rm -rfv /tmp/tpm2-tools
 
 ## libcoap
 RUN git clone --recursive -b 'v4.3.0' \
-	'https://github.com/obgm/libcoap.git' /tmp/libcoap
+    'https://github.com/obgm/libcoap.git' /tmp/libcoap
 # Usually the second git checkout should be enough with an added
 # '--recurse-submodules', but for some reason this fails in the
 # default docker build environment.
@@ -97,65 +111,65 @@ RUN git checkout ea1deffa6b3997eea02635579a4b7fb7af4915e5
 COPY "./docker/dist/coap_tinydtls.patch" .
 RUN patch -p 1 < coap_tinydtls.patch
 RUN ./autogen.sh \
-	&& ./configure --disable-tests --disable-documentation --disable-manpages --enable-dtls --with-tinydtls --enable-fast-install \
-	&& make -j \
-	&& make install \
-	&& ldconfig
+    && ./configure --disable-tests --disable-documentation --disable-manpages --enable-dtls --with-tinydtls --enable-fast-install \
+    && make -j \
+    && make install \
+    && ldconfig
 RUN rm -rfv /tmp/libcoap
 
 ## mbed TLS
 RUN apt-get update \
-	&& apt-get install --no-install-recommends -y \
-	python3-jinja2 \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install --no-install-recommends -y \
+    python3-jinja2 \
+    && rm -rf /var/lib/apt/lists/*
 RUN git clone --recursive -b 'v3.2.1' \
-	'https://github.com/ARMmbed/mbedtls.git' /tmp/mbedtls
+    'https://github.com/ARMmbed/mbedtls.git' /tmp/mbedtls
 WORKDIR /tmp/mbedtls
 RUN make -j lib SHARED=true \
-	&& make install \
-	&& ldconfig
+    && make install \
+    && ldconfig
 RUN rm -rfv /tmp/mbedtls
 
 ## QCBOR
 RUN git clone --depth=1 --recursive -b 'v1.1' \
-	'https://github.com/laurencelundblade/QCBOR.git' /tmp/qcbor
+    'https://github.com/laurencelundblade/QCBOR.git' /tmp/qcbor
 WORKDIR /tmp/qcbor
 RUN make -j all so \
-	&& make install install_so \
-	&& ldconfig	
+    && make install install_so \
+    && ldconfig    
 RUN rm -rfv /tmp/qcbor
 
 ## t_cose
 RUN git clone --depth=1 --recursive -b 'v1.0.1' \
-	'https://github.com/laurencelundblade/t_cose.git' /tmp/t_cose
+    'https://github.com/laurencelundblade/t_cose.git' /tmp/t_cose
 WORKDIR /tmp/t_cose
 RUN make -j -f Makefile.psa libt_cose.a libt_cose.so \
-	&&  make -f Makefile.psa install install_so \
-	&& ldconfig
+    &&  make -f Makefile.psa install install_so \
+    && ldconfig
 RUN rm -rfv /tmp/t_cose
 
 ##libsodium
 RUN git clone 'https://github.com/jedisct1/libsodium' --branch 'stable' /tmp/libsodium
 WORKDIR /tmp/libsodium
 RUN ./configure \
-	&& make -j \
-	&& make check \
-	&& make install \
-	&& ldconfig
+    && make -j \
+    && make check \
+    && make install \
+    && ldconfig
 RUN rm -rfv /tmp/libsodium
 ## install debugging tools
 RUN apt-get update \
-	&& apt-get install --no-install-recommends -y \
-	clang \
-	valgrind \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install --no-install-recommends -y \
+    clang \
+    valgrind \
+    && rm -rf /var/lib/apt/lists/*
 
 ## install sudo and gosu
 RUN apt-get update \
-	&& apt-get install --no-install-recommends -y \
-	gosu \
-	sudo \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install --no-install-recommends -y \
+    gosu \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
 
 ## set default values
 ARG user=bob
@@ -165,24 +179,19 @@ ARG gid=1000
 RUN git clone 'https://github.com/DominikRoy/RACD.git' /home/charra-racd
 WORKDIR /home/charra-racd
 RUN 7z x racd-protocol.7z \
-	&& git clone 'https://github.com/Fraunhofer-SIT/charra.git'
+    && git clone 'https://github.com/Fraunhofer-SIT/charra.git'
 
 #WORKDIR /home/charra-racd/charra_adapted-time
 #RUN make
 
 WORKDIR /home/charra-racd/ppra-protocol
 RUN make -f Makefileclient clean\
-	&& make -f Makefileserver clean\
-	&& make -f Makefileclient \
-	&& make -f Makefileserver 
+    && make -f Makefileserver clean\
+    && make -f Makefileclient \
+    && make -f Makefileserver 
 
 WORKDIR /home/charra-racd/charra
 RUN make -j
-
-
-
-
-
 
 
 ## -----------------------------------------------------------------------------
@@ -248,20 +257,20 @@ RUN apt-get update \
 
 ## install sudo and gosu
 RUN apt-get update \
-	&& apt-get install --no-install-recommends -y \
-	gosu \
-	sudo \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install --no-install-recommends -y \
+    gosu \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
 
 ## create non-root user and grant sudo permission
 RUN export user="$user" uid="$uid" gid="$gid" \
-	&& addgroup --gid "$gid" "$user" \
-	&& adduser --home /home/"$user" --uid "$uid" --gid "$gid" \
-	--disabled-password --gecos '' "$user" \
-	&& mkdir -vp /etc/sudoers.d/ \
-	&& echo "$user     ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/"$user" \
-	&& chmod 0440 /etc/sudoers.d/"$user" \
-	&& chown "$uid":"$gid" -R /home/"$user"
+    && addgroup --gid "$gid" "$user" \
+    && adduser --home /home/"$user" --uid "$uid" --gid "$gid" \
+    --disabled-password --gecos '' "$user" \
+    && mkdir -vp /etc/sudoers.d/ \
+    && echo "$user     ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/"$user" \
+    && chmod 0440 /etc/sudoers.d/"$user" \
+    && chown "$uid":"$gid" -R /home/"$user"
 
 
 ## -----------------------------------------------------------------------------
@@ -288,6 +297,7 @@ RUN ln -s '/usr/local/bin/docker-entrypoint.sh' /
 USER "$uid:$gid"
 ENV HOME /home/"$user"
 WORKDIR /home/charra-racd/charra/
+
 
 ## -----------------------------------------------------------------------------
 ## --- postamble ---------------------------------------------------------------
