@@ -6,8 +6,8 @@
 # define the C compiler to use
 CC = clang
 #-O1 -Wall -Wextra -Og -g  -fsanitize=address -fno-omit-frame-pointer
-# define any compile-time flags -O1 -Wall -Wextra -Og -g  -fsanitize=address
-CFLAGS	:= -O1 -Wall -Wextra -Og -g -fsanitize=address
+# define any compile-time flags -O1 -Wall -Wextra -Og -g -fsanitize=address
+CFLAGS	:= -O1 -Wall -Wextra -Og -g
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
