@@ -1,0 +1,15 @@
+**/mbedtls
+**/nettle
+**/libsodium
+**/qcbor
+**/tss2
+lib/
+.vscode/
+*.csv
+*.py
+*.diag
+*.json
+*.log
+output/*
+!output/.gitkeep
+
