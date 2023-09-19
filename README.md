@@ -415,9 +415,6 @@ Continue with the steps described in [Run the RACD Protocol PoC](#run-the-racd-p
    ## change folder
    cd example
 
-   ## remove log files
-   rm -v pcr0.log ppra_attester_50_local_new.csv ppra_verifier_50_new.csv
-
    ## export
    export ASAN_OPTIONS=verify_asan_link_order=0
 
@@ -432,4 +429,7 @@ Continue with the steps described in [Run the RACD Protocol PoC](#run-the-racd-p
        server_port=4433 ca_file=my_ca_localhost.crt \
        crt_file=verifier_localhost.crt key_file=verifier_key.key \
        swSelection_file=programs50.cbor; done
+
+   ## remove log files for next data gathering
+   rm -v pcr0.log ppra_attester_50_local_new.csv ppra_verifier_50_new.csv
    ```
