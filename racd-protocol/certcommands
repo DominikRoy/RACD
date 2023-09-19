@@ -1,0 +1,14 @@
+#Generate CA
+./cert_write selfsign=1 issuer_key=ca_key.key issuer_name=CN=localhost,O=localhost,C=DE is_ca=1 max_pathlen=0 output_file=my_ca_localhost.crt 
+
+#Generate Server csr
+./cert_req filename=prover_key.key subject_name=CN=localhost,O=Prover,C=DE output_file=prover_localhost.csr
+
+#Generate Client csr
+./cert_req filename=verifier_key.key subject_name=CN=localhost,O=Verifier,C=DE output_file=verifier_localhost.csr
+
+#Generate Server cert from csr with openssl
+openssl x509 -req -in prover_localhost.csr -CA my_ca_localhost.crt -CAkey ca_key.key -CAcreateserial -out prover_localhost.crt -days 5000 -sha256
+
+#Generate Client cert from csr with openssl with selfsigned CA
+openssl x509 -req -in verifier_localhost.csr -CA my_ca_localhost.crt -CAkey ca_key.key -CAcreateserial -out verifier_localhost.crt -days 5000 -sha256
