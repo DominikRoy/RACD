@@ -4,12 +4,12 @@
 **/qcbor
 **/tss2
 lib/
-output/
 .vscode/
 *.csv
-programs*
 *.py
-*.cbor
 *.diag
 *.json
 *.log
+output/*
+!output/.gitkeep
+
