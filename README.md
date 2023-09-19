@@ -393,7 +393,7 @@ sudo chmod 777 /dev/tpm*
 
 Continue with the steps described in [Run the RACD Protocol PoC](#run-the-racd-protocol-poc)
 
-### Run the RACD Protocol
+### Run the RACD Protocol PoC
 
 1. Compile:
 
