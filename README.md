@@ -432,5 +432,4 @@ Continue with the steps described in [Run the RACD Protocol PoC](#run-the-racd-p
        server_port=4433 ca_file=my_ca_localhost.crt \
        crt_file=verifier_localhost.crt key_file=verifier_key.key \
        swSelection_file=programs50.cbor; done
-```
-
+   ```
