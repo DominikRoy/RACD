@@ -1,12 +1,123 @@
-# PPRA-Protocol
-The idea of the PPRA-Protocol (Privacy-Perserving Remote Attestation) is to preserve the privacy from Stored Measured Logs of the prover to the verifier.
-## ND-Hash
-Explanation of ND-hash coming soon
-Currently there exists two implementation by using the libsodium library. One with ed25519 curve and other with the ristretto255 from the Mike hamburgs Decaf design. **https://ristretto.group/ristretto.html**
-## NIZK
-upcoming
-## RA
+# RACD-Details
+We describe the folders (example, include and src) and files in a high-level to give a broad understanding based on the tree strcuture:
+```md
+racd-protocol
+├── certcommands  
+├── docker
+│   ├── build.sh
+│   ├── docker-image.config
+│   └── run.sh
+├── Dockerfile
+├── example
+│   ├── CN=192.168.1.199, O=Verifier, C=DE
+│   ├── CN=localhost, O=Verifier, C=DE
+│   ├── example.sh
+│   ├── my_ca_192-2.crt
+│   ├── my_ca_localhost.crt
+│   ├── programs100.cbor
+│   ├── programs150.cbor
+│   ├── programs200.cbor
+│   ├── programs250.cbor
+│   ├── programs50.cbor
+│   ├── prover_192-2.crt
+│   ├── prover_192.crt
+│   ├── prover_key.key
+│   ├── prover_localhost.crt
+│   ├── response.cbor
+│   ├── selected.cbor
+│   ├── swSelection.cbor
+│   ├── verifier_100.h
+│   ├── verifier_192-2.crt
+│   ├── verifier_192.crt
+│   ├── verifier.h
+│   ├── verifier_key.key
+│   └── verifier_localhost.crt
+├── include
+│   ├── core
+│   │   ├── communication
+│   │   │   ├── attestphase.h
+│   │   │   └── events.h
+│   │   ├── dto
+│   │   │   ├── ppra_dto.h
+│   │   │   └── ppra_dto_message_encdec.h
+│   │   ├── hash
+│   │   │   ├── hash_sig_verify.h
+│   │   │   └── templatehash.h
+│   │   ├── nizk
+│   │   │   └── nizk.h
+│   │   ├── prover
+│   │   │   └── prover.h
+│   │   ├── tpm2_charra
+│   │   │   ├── charra_helper.h
+│   │   │   ├── charra_key_mgr.h
+│   │   │   └── charra_util.h
+│   │   └── verifier
+│   │       └── verifier.h
+│   ├── evaluation
+│   │   └── duration.h
+│   └── util
+│       ├── buftohex.h
+│       ├── cbor_help.h
+│       ├── clock-profiling.h
+│       ├── fileIO.h
+│       ├── nonce.h
+│       └── tpm2_util.h
+├── Makefile
+├── Makefileclient
+├── Makefile_generator
+├── Makefileserver
+└── src
+    ├── core
+    │   ├── communication
+    │   │   ├── attestphase.c
+    │   │   └── events.c
+    │   ├── dto
+    │   │   └── ppra_dto_message_encdec.c
+    │   ├── hash
+    │   │   ├── hash_sig_verify.c
+    │   │   └── templatehash.c
+    │   ├── nizk
+    │   │   └── nizk.c
+    │   ├── prover
+    │   │   └── prover.c
+    │   ├── tpm2_charra
+    │   │   ├── charra_helper.c
+    │   │   ├── charra_key_mgr.c
+    │   │   └── charra_util.c
+    │   └── verifier
+    │       └── verifier.c
+    ├── evaluation
+    │   ├── duration.c
+    │   └── evaluation.c
+    ├── generator.c
+    └── util
+        ├── buftohex.c
+        ├── cbor_help.c
+        ├── clock-profiling.c
+        ├── fileIO.c
+        ├── nonce.c
+        └── tpm2_util.c
 
-## MQTT
+```
+In the root folder we provide make files, where the `MakeFileclient` generates the exectuable of the verifier (partial verifier) and the `Makefileserver` generates the executable of the attester.
 
+
+## Example Folder
+## Include and Src Folder
+In the `include` folder we provide the header files and with the function signature. However, the implementation of the functions are in the `src` folder.
+The `src/core` folder contains the major parts of the `racd-protocol`. 
+
+| Files | Content |
+| -----: | ------- |
+| ```prover/prover.c``` | The prover folder contains the code of the attester which creates with mbedTLS a socket and waits for the verifier to connect. |
+| ```verifier/verifier.c``` | The prover folder contains the code of the attester which creates with mbedTLS a socket and waits for the verifier to connect. |
+| ```tpm2_charra/*``` | In this project we integrated functions from [CHARRA](https://github.com/Fraunhofer-SIT/charra) to execute certain functions on the TPM, such as creating a key. |
+| ```hash/templatehash.c``` | In this file we implement the template hash as described in Section 5.1 in our paper. |
+| ```hash/hash_sig_verify.c``` | This file provides the functions for generating sha256, verifying the signature and converting the RSA public from the TPM into the mbedTLS format. |
+| ```nizk/nizk.c``` | The `nizk.c` contains the implementation of the Algorithm 1 and Algorithm 2 as stated in our paper. The implementation uses the libsodium library where we use the ristretto255 to generate the NIZK proof (**https://ristretto.group/ristretto.html**).|
+| ```dto/*``` | This folder contains only the encoding of the data transfer objects based on the QCBOR library.|
+| ```communication/attestphase.c ``` | In here we implement the functions necessary to do the measured boot, requesting the attestation and providng the attestation response. This file is the core file of the entire project, where information from TPM are retrieved through TSS API. |
+| ``` communication/events.c``` | This file describes the encoding and the decoding of events objects.|
+| ```util/* ```| The `util` folder contains programs to generate the nonce, reading files and helper functions.|
+|``` evaluation/*```| This folder contains function to measure the CPU cycle of our protocol and the execution time.|
 
