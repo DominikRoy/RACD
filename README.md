@@ -116,14 +116,14 @@ We provide instructions to emulate our PoC in Docker with a TPM Simulator.
 In addition, we describe the commands to deploy our PoC on a real hardware, a Raspberry Pi 3 Model B, and with a real hardware TPM that we used in our experiment evaluation.
 
 ### Overview
-The table below gives a small overview of the structure and sub-folders of the `racd-protocol` folder. For more details we refer to  [racd-protocol readme](racd-protocol/README.md).
+The table below gives a small overview of the structure and sub-folders of the `racd-protocol` folder. For more details, we refer to  [racd-protocol readme](racd-protocol/README.md).
 
 | Folder | Content |
 | -----: | ------- |
-| ```docker``` | The docker folder contains necessary configuration scripts for the Dockerfile in the `racd-protocol` . For changes or re-use the [Dockerfile](racd-protocol/Dockerfile) needs to be only customized. Hence, the `build.sh` and `run.sh` exist to build the image and to run the image. |
-| ```example``` | The `example` folder presents cbor files and examplary certificates. We describe in the `readme` in the `racd-protocol` more in detail the files.  |
+| ```docker``` | The docker folder contains necessary configuration scripts for the Dockerfile in the `racd-protocol` . For changes or re-use, the [Dockerfile](racd-protocol/Dockerfile) needs to be only customized. Hence, the `build.sh` and `run.sh` exist to build the image and to run the image. |
+| ```example``` | The `example` folder presents `cbor` files and exemplary certificates. More details can be found in the `readme` of the `racd-protocol`.  |
 | ```include``` | The `include` folder contains all the C - header files. |
-| ```src``` | The `src` folder contains the actual implementation of the `racd-protocol`. For details we refer to [racd-protocol readme](racd-protocol/README.md).
+| ```src``` | The `src` folder contains the actual implementation of the `racd-protocol`. For details, we refer to [racd-protocol readme](racd-protocol/README.md).
 
 
 
